@@ -1,28 +1,40 @@
 #include "holberton.h"
 
 /**
- * get_builtin - builtin that pais the command in the arg
- * @cmd: command
- * Return: function pointer of the builtin command
+ * get_error - calls the error according the builtin, syntax or permission
+ * @datash: data structure that contains arguments
+ * @eval: error value
+ * Return: error
  */
-int (*get_builtin(char *cmd))(data_shell *)
+int get_error(data_shell *datash, int eval)
 {
-	builtin_t builtin[] = {
-		{ "env", _env },
-		{ "exit", exit_shell },
-		{ "setenv", _setenv },
-		{ "unsetenv", _unsetenv },
-		{ "cd", cd_shell },
-		{ "help", get_help },
-		{ NULL, NULL }
-	};
-	int i;
+	char *error;
 
-	for (i = 0; builtin[i].name; i++)
+	switch (eval)
 	{
-		if (_strcmp(builtin[i].name, cmd) == 0)
-			break;
+	case -1:
+		error = error_env(datash);
+		break;
+	case 126:
+		error = error_path_126(datash);
+		break;
+	case 127:
+		error = error_not_found(datash);
+		break;
+	case 2:
+		if (_strcmp("exit", datash->args[0]) == 0)
+			error = error_exit_shell(datash);
+		else if (_strcmp("cd", datash->args[0]) == 0)
+			error = error_get_cd(datash);
+		break;
 	}
 
-	return (builtin[i].f);
+	if (error)
+	{
+		write(STDERR_FILENO, error, _strlen(error));
+		free(error);
+	}
+
+	datash->status = eval;
+	return (eval);
 }
