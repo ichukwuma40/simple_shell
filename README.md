@@ -2,7 +2,7 @@
 <br>
 <hr> Description
 
-Here is the base code for the project/tutorial that I made on how to create a shell using the C programming language. 
+Code for the Simple Shell ALX team  project on how to create a shell using the C programming language.
 <hr>
        By
 
