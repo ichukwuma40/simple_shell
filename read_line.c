@@ -1,17 +1,28 @@
-#include "holberton.h"
+#include "shell.h"
 
 /**
- * read_line - reads the input string.
+ * read_line - read a line from stdin
  *
- * @i_eof: return value of getline function
- * Return: input string
+ * Return: pointer that points to a str with the line content
  */
-char *read_line(int *i_eof)
+char *read_line(void)
 {
-	char *input = NULL;
+	char *line = NULL;
 	size_t bufsize = 0;
 
-	*i_eof = getline(&input, &bufsize, stdin);
-
-	return (input);
+	if (getline(&line, &bufsize, stdin) == -1) /* if getline fails */
+	{
+		if (feof(stdin)) /* test for the eof */
+		{
+			free(line); /* avoid memory leaks when ctrl + d */
+			exit(EXIT_SUCCESS); /* we recieved an eof */
+		}
+		else
+		{
+			free(line); /* avoid memory leaks when getline fails */
+			perror("error while reading the line from stdin");
+			exit(EXIT_FAILURE);
+		}
+	}
+	return (line);
 }

@@ -1,7 +1,4 @@
-#simple_shell
-<hr>
-A collaboratory project on simple shell
-<br>
-               BY
- 
-<br> Innocent Chukwuma and Chilota Joshua Ngene.
+# Simple Shell
+## Description
+
+Here is the base code for the project/tutorial that I made on how to create a shell using the C programming language. 
